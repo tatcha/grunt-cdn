@@ -103,6 +103,23 @@ Job.prototype._replace = function (resource) {
     return resource;
   }
 
+  if (options.ignoreMissingAssets) {
+    var paths = Array.isArray(options.assetSearchRoot) ? options.assetSearchRoot : [options.assetSearchRoot];
+    var found = false;
+    for (var i = 0, len = paths.length; i < len; i++) {
+      if (grunt.file.exists(path.join(paths[i], resource))) {
+        found = true;
+      }
+    }
+    if (!found) {
+      self.emit("ignore", {
+        resource: resource,
+        reason: "not found in asset search root"
+      });
+      return resource;
+    }
+  }
+
   // if stripDirs then loop through and strip
   if (options.stripDirs) {
     if (typeof options.stripDirs === 'string') {
@@ -120,7 +137,7 @@ Job.prototype._replace = function (resource) {
   if (relativeTo.match(/^\/\/\w/)) {
     src = src.replace(/^\/(\w)/, '\/\/$1');
   }
-  
+
   self.emit('entry', {
     before: resourceUrl.pathname,
     after: src
