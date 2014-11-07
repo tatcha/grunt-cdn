@@ -1,7 +1,7 @@
 module.exports = {
   htmlsplitters: [
     {
-      splitters: ['<img ', '<source ', '<script '],
+      splitters: ['<img ', '<source ', '<script ', '<v:fill '],
       rgx: new RegExp(/(?:src)=['"](?!\w*?:?\/\/)([^'"\{]+)['"].*\/?>/i)
     },
     {
@@ -15,6 +15,10 @@ module.exports = {
     {
       splitters: ['<script '],
       rgx: new RegExp(/data-main=['"](?!\w*?:?\/\/)([^'"\{]+)['"].*\/?>/i)
+    },
+    {
+      splitters: ['<td '],
+      rgx: new RegExp(/(?:background)=['"](?!\w*?:?\/\/)([^'"\{]+)['"].*\/?>/i)
     }
   ],
   regcss: new RegExp(/url\(([^)]+)\)/ig),
